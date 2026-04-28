@@ -2,28 +2,10 @@ package be.mygod.datasimtile;
 
 import android.os.Parcel;
 
-final class TelephonySnapshot {
+record TelephonySnapshot(int status, String error, int currentSubId, String currentName, int targetSubId,
+                         String targetName, int simCount) {
     static final int STATUS_OK = 0;
     static final int STATUS_ERROR = 1;
-
-    final int status;
-    final String error;
-    final int currentSubId;
-    final String currentName;
-    final int targetSubId;
-    final String targetName;
-    final int simCount;
-
-    TelephonySnapshot(int status, String error, int currentSubId, String currentName,
-            int targetSubId, String targetName, int simCount) {
-        this.status = status;
-        this.error = error;
-        this.currentSubId = currentSubId;
-        this.currentName = currentName;
-        this.targetSubId = targetSubId;
-        this.targetName = targetName;
-        this.simCount = simCount;
-    }
 
     static TelephonySnapshot error(Throwable throwable) {
         String message = throwable.getMessage();

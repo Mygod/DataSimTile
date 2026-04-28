@@ -7,6 +7,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 public final class SimSelectorTest {
     @Test
@@ -18,31 +19,34 @@ public final class SimSelectorTest {
 
     @Test
     public void sortedActiveFiltersInactiveAndSortsBySlotThenSubId() {
+        SimRecord sim30 = new SimRecord(30, 1, "B");
+        SimRecord inactive = new SimRecord(10, -1, "Inactive");
+        SimRecord sim20 = new SimRecord(20, 0, "A");
+        SimRecord sim15 = new SimRecord(15, 0, "A2");
         List<SimRecord> result = SimSelector.sortedActive(Arrays.asList(
-                new SimRecord(30, 1, "B"),
-                new SimRecord(10, -1, "Inactive"),
-                new SimRecord(20, 0, "A"),
-                new SimRecord(15, 0, "A2")));
-        assertEquals(15, result.get(0).subId);
-        assertEquals(20, result.get(1).subId);
-        assertEquals(30, result.get(2).subId);
+                sim30, inactive, sim20, sim15));
+        assertSame(sim15, result.get(0));
+        assertSame(sim20, result.get(1));
+        assertSame(sim30, result.get(2));
     }
 
     @Test
     public void nextAfterWrapsToFirstSim() {
+        SimRecord first = new SimRecord(14, 0, "A");
+        SimRecord second = new SimRecord(15, 1, "B");
         List<SimRecord> sims = SimSelector.sortedActive(Arrays.asList(
-                new SimRecord(14, 0, "A"),
-                new SimRecord(15, 1, "B")));
-        assertEquals(15, SimSelector.nextAfter(sims, 14).subId);
-        assertEquals(14, SimSelector.nextAfter(sims, 15).subId);
+                first, second));
+        assertSame(second, SimSelector.nextAfter(sims, 14));
+        assertSame(first, SimSelector.nextAfter(sims, 15));
     }
 
     @Test
     public void nextAfterUnknownCurrentUsesFirstSim() {
+        SimRecord first = new SimRecord(14, 0, "A");
         List<SimRecord> sims = SimSelector.sortedActive(Arrays.asList(
-                new SimRecord(14, 0, "A"),
+                first,
                 new SimRecord(15, 1, "B")));
-        assertEquals(14, SimSelector.nextAfter(sims, 99).subId);
+        assertSame(first, SimSelector.nextAfter(sims, 99));
     }
 
     @Test

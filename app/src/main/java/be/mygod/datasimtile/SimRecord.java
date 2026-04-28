@@ -1,16 +1,6 @@
 package be.mygod.datasimtile;
 
-final class SimRecord {
-    final int subId;
-    final int slotIndex;
-    final String name;
-
-    SimRecord(int subId, int slotIndex, String name) {
-        this.subId = subId;
-        this.slotIndex = slotIndex;
-        this.name = name;
-    }
-
+record SimRecord(int subId, int slotIndex, String name) {
     static String chooseName(CharSequence displayName, CharSequence carrierName, int slotIndex) {
         String display = clean(displayName);
         if (display != null) return display;

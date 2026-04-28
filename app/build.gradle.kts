@@ -2,10 +2,6 @@ plugins {
     id("com.android.application")
 }
 
-configurations.configureEach {
-    exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib")
-}
-
 android {
     namespace = "be.mygod.datasimtile"
     compileSdk = 36
@@ -36,6 +32,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+        }
+    }
+
+    packaging {
+        resources {
+            excludes += "kotlin/**"
         }
     }
 }

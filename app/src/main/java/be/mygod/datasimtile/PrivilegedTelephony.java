@@ -33,17 +33,16 @@ final class PrivilegedTelephony {
     /**
      * Matches Settings' data-SIM picker: change the default data subscription, then enable user
      * mobile data on the selected subscription.
-     *
-     * AOSP Settings:
-     * https://android.googlesource.com/platform/packages/apps/Settings/+/7c598253ff60f06f8e6fe046f18fd88e9daa72d3/src/com/android/settings/sim/SimDialogActivity.java#357
+     * <p>
+     * <a href="https://android.googlesource.com/platform/packages/apps/Settings/+/7c598253ff60f06f8e6fe046f18fd88e9daa72d3/src/com/android/settings/sim/SimDialogActivity.java#357">AOSP Settings</a>
      */
     static TelephonySnapshot toggle() throws Exception {
         Object service = getSubscriptionService();
         TelephonySnapshot before = snapshot(service);
         if (!before.canSwitch()) return before;
         invoke(service, SUBSCRIPTION_INTERFACE, "setDefaultDataSubId",
-                new Class<?>[] { int.class }, before.targetSubId);
-        setDataEnabled(before.targetSubId);
+                new Class<?>[] { int.class }, before.targetSubId());
+        setDataEnabled(before.targetSubId());
         return snapshot(service);
     }
 
@@ -54,8 +53,8 @@ final class PrivilegedTelephony {
         SimRecord current = SimSelector.findCurrent(sims, currentSubId);
         SimRecord target = SimSelector.nextAfter(sims, currentSubId);
         return new TelephonySnapshot(TelephonySnapshot.STATUS_OK, null, currentSubId,
-                current == null ? null : current.name, target == null ? -1 : target.subId,
-                target == null ? null : target.name, sims.size());
+                current == null ? null : current.name(), target == null ? -1 : target.subId(),
+                target == null ? null : target.name(), sims.size());
     }
 
     private static Object getSubscriptionService() throws Exception {

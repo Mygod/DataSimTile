@@ -44,6 +44,10 @@ This matches AOSP Settings' default data SIM picker: Settings changes the defaul
 mobile data for the chosen subscription. Without that second step, switching to a SIM whose per-subscription mobile data
 flag is off can leave mobile data disabled.
 
+### Android 6 plz...?
+
+There is no quick setting tile on Android 6.
+
 ## Private APIs used / Assumptions for Android customizations
 
 _a.k.a. things that can go wrong if this app doesn't work._

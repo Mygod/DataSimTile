@@ -129,8 +129,8 @@ public final class DataSimTileService extends TileService {
 
     private void cache(TelephonySnapshot snapshot) {
         getSharedPreferences(PREFS, MODE_PRIVATE).edit()
-                .putString(KEY_CURRENT_NAME, snapshot.currentName)
-                .putString(KEY_TARGET_NAME, snapshot.targetName)
+                .putString(KEY_CURRENT_NAME, snapshot.currentName())
+                .putString(KEY_TARGET_NAME, snapshot.targetName())
                 .putBoolean(KEY_CAN_SWITCH, snapshot.canSwitch())
                 .apply();
     }
@@ -138,7 +138,7 @@ public final class DataSimTileService extends TileService {
     private void updateTile(TelephonySnapshot snapshot) {
         Tile tile = getQsTile();
         if (tile == null) return;
-        String currentName = displayName(snapshot.currentName);
+        String currentName = displayName(snapshot.currentName());
         if (Build.VERSION.SDK_INT >= 29) {
             tile.setLabel(getString(R.string.tile_label));
             tile.setSubtitle(currentName);
@@ -146,7 +146,7 @@ public final class DataSimTileService extends TileService {
             tile.setLabel(currentName);
         }
         tile.setState(snapshot.canSwitch() ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE);
-        String targetName = displayName(snapshot.targetName);
+        String targetName = displayName(snapshot.targetName());
         tile.setContentDescription(snapshot.canSwitch()
                 ? getString(R.string.tile_label) + ", " + currentName + ", tap to switch to " + targetName
                 : getString(R.string.tile_label) + ", " + currentName);
