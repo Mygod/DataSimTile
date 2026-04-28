@@ -4,6 +4,8 @@
 [![API](https://img.shields.io/badge/API-24%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=24)
 [![Language: Java](https://img.shields.io/github/languages/top/Mygod/DataSimTile.svg)](https://github.com/Mygod/DataSimTile/search?l=java)
 
+[![Get it on Obtainium](https://github.com/ImranR98/Obtainium/raw/main/assets/graphics/badge_obtainium.png)](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/Mygod/DataSimTile)
+
 One quick settings tile to switch the default mobile data SIM. (**Shizuku required**)
 
 This app is useful for:
@@ -14,7 +16,7 @@ This app is useful for:
 
 There is no launcher UI. If Shizuku is unavailable or not granted, tapping the tile opens the system SIM settings screen.
 
-## Settings and How to Use Them
+## Getting started
 
 1. Install and start [Shizuku](https://shizuku.rikka.app/).
 2. Install Data SIM Tile.
