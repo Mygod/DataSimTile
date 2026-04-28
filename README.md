@@ -14,7 +14,8 @@ This app is useful for:
 * Keeping the tile label on the current data SIM name;
 * Matching the Settings data-SIM picker behavior by enabling mobile data on the selected SIM after switching.
 
-There is no launcher UI. If Shizuku is unavailable or not granted, tapping the tile opens the system SIM settings screen.
+There is no launcher UI. Long-pressing the tile opens the system SIM settings screen. If Shizuku is unavailable or not
+granted, tapping the tile opens the same settings screen.
 
 ## Getting started
 
