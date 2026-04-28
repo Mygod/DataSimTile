@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.Settings;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 
@@ -170,9 +169,7 @@ public final class DataSimTileService extends TileService {
     @SuppressLint("StartActivityAndCollapseDeprecated")
     @SuppressWarnings("deprecation")
     private void openSimSettings() {
-        Intent intent = new Intent(Build.VERSION.SDK_INT >= 31
-                ? Settings.ACTION_MANAGE_ALL_SIM_PROFILES_SETTINGS
-                : Settings.ACTION_WIRELESS_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent intent = SimSettingsActivity.settingsIntent();
         if (Build.VERSION.SDK_INT >= 34) {
             startActivityAndCollapse(PendingIntent.getActivity(this, 0, intent,
                     PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE));

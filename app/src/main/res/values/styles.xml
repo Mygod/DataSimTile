@@ -1,0 +1,6 @@
+<resources>
+    <style name="Theme.DataSimTile.Invisible" parent="@android:style/Theme.NoDisplay">
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+</resources>
