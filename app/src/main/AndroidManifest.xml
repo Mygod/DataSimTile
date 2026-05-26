@@ -6,7 +6,7 @@
         android:allowBackup="false"
         android:hasFragileUserData="false"
         android:icon="@drawable/ic_data_sim"
-        android:label="DataSimTile"
+        android:label="@string/tile_label"
         android:supportsRtl="true">
 
         <provider

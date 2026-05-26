@@ -11,10 +11,10 @@ import static org.junit.Assert.assertSame;
 
 public final class SimSelectorTest {
     @Test
-    public void chooseNameUsesDisplayThenCarrierThenSlot() {
-        assertEquals("Display", SimRecord.chooseName(" Display ", "Carrier", 0));
-        assertEquals("Carrier", SimRecord.chooseName(" ", " Carrier ", 0));
-        assertEquals("SIM 2", SimRecord.chooseName(null, "", 1));
+    public void chooseNameUsesDisplayThenCarrier() {
+        assertEquals("Display", SimRecord.chooseName(" Display ", "Carrier"));
+        assertEquals("Carrier", SimRecord.chooseName(" ", " Carrier "));
+        assertNull(SimRecord.chooseName(null, ""));
     }
 
     @Test

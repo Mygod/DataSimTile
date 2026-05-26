@@ -20,7 +20,9 @@ public final class DataSimTileService extends TileService {
     private static final int REQUEST_SHIZUKU_PERMISSION = 1;
     private static final String PREFS = "tile";
     private static final String KEY_CURRENT_NAME = "currentName";
+    private static final String KEY_CURRENT_SLOT_INDEX = "currentSlotIndex";
     private static final String KEY_TARGET_NAME = "targetName";
+    private static final String KEY_TARGET_SLOT_INDEX = "targetSlotIndex";
     private static final String KEY_CAN_SWITCH = "canSwitch";
     private static final Handler MAIN = new Handler(Looper.getMainLooper());
     private static final ExecutorService WORKER = Executors.newSingleThreadExecutor(r -> {
@@ -57,7 +59,9 @@ public final class DataSimTileService extends TileService {
 
     @Override
     public void onStartListening() {
-        if (!updateTileFromCache()) updateTileStatus("Shizuku needed", Tile.STATE_INACTIVE);
+        if (!updateTileFromCache()) {
+            updateTileStatus(getString(R.string.tile_status_shizuku_needed), Tile.STATE_INACTIVE);
+        }
         refreshFromShizukuIfAllowed();
     }
 
@@ -80,7 +84,7 @@ public final class DataSimTileService extends TileService {
             openSimSettings();
             return;
         }
-        updateTileStatus("Switching...", Tile.STATE_INACTIVE);
+        updateTileStatus(getString(R.string.tile_status_switching), Tile.STATE_INACTIVE);
         WORKER.execute(() -> {
             try {
                 TelephonySnapshot snapshot = ShizukuTelephonyClient.toggle(this);
@@ -118,18 +122,26 @@ public final class DataSimTileService extends TileService {
     private boolean updateTileFromCache() {
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         String currentName = prefs.getString(KEY_CURRENT_NAME, null);
+        int currentSlotIndex = prefs.getInt(KEY_CURRENT_SLOT_INDEX, -1);
         String targetName = prefs.getString(KEY_TARGET_NAME, null);
+        int targetSlotIndex = prefs.getInt(KEY_TARGET_SLOT_INDEX, -1);
         boolean canSwitch = prefs.getBoolean(KEY_CAN_SWITCH, false);
-        if (currentName == null && targetName == null && !canSwitch) return false;
-        updateTile(new TelephonySnapshot(TelephonySnapshot.STATUS_OK, null, -1, currentName,
-                canSwitch ? 0 : -1, targetName, canSwitch ? 2 : 0));
+        if (currentName == null && currentSlotIndex < 0 && targetName == null
+                && targetSlotIndex < 0 && !canSwitch) {
+            return false;
+        }
+        updateTile(new TelephonySnapshot(TelephonySnapshot.STATUS_OK, null, -1,
+                currentSlotIndex, currentName, canSwitch ? 0 : -1, targetSlotIndex, targetName,
+                canSwitch ? 2 : 0));
         return true;
     }
 
     private void cache(TelephonySnapshot snapshot) {
         getSharedPreferences(PREFS, MODE_PRIVATE).edit()
                 .putString(KEY_CURRENT_NAME, snapshot.currentName())
+                .putInt(KEY_CURRENT_SLOT_INDEX, snapshot.currentSlotIndex())
                 .putString(KEY_TARGET_NAME, snapshot.targetName())
+                .putInt(KEY_TARGET_SLOT_INDEX, snapshot.targetSlotIndex())
                 .putBoolean(KEY_CAN_SWITCH, snapshot.canSwitch())
                 .apply();
     }
@@ -137,33 +149,37 @@ public final class DataSimTileService extends TileService {
     private void updateTile(TelephonySnapshot snapshot) {
         Tile tile = getQsTile();
         if (tile == null) return;
-        String currentName = displayName(snapshot.currentName());
+        String tileLabel = getString(R.string.tile_label);
+        String currentName = displayName(snapshot.currentName(), snapshot.currentSlotIndex());
         if (Build.VERSION.SDK_INT >= 29) {
-            tile.setLabel(getString(R.string.tile_label));
+            tile.setLabel(tileLabel);
             tile.setSubtitle(currentName);
         } else {
             tile.setLabel(currentName);
         }
         tile.setState(snapshot.canSwitch() ? Tile.STATE_ACTIVE : Tile.STATE_INACTIVE);
-        String targetName = displayName(snapshot.targetName());
+        String targetName = displayName(snapshot.targetName(), snapshot.targetSlotIndex());
         tile.setContentDescription(snapshot.canSwitch()
-                ? getString(R.string.tile_label) + ", " + currentName + ", tap to switch to " + targetName
-                : getString(R.string.tile_label) + ", " + currentName);
+                ? getString(R.string.tile_content_description_switch, tileLabel, currentName, targetName)
+                : getString(R.string.tile_content_description, tileLabel, currentName));
         tile.updateTile();
     }
 
     private void updateTileStatus(String status, int state) {
         Tile tile = getQsTile();
         if (tile == null) return;
-        tile.setLabel(getString(R.string.tile_label));
+        String tileLabel = getString(R.string.tile_label);
+        tile.setLabel(tileLabel);
         if (Build.VERSION.SDK_INT >= 29) tile.setSubtitle(status);
         tile.setState(state);
-        tile.setContentDescription(getString(R.string.tile_label) + ", " + status);
+        tile.setContentDescription(getString(R.string.tile_content_description, tileLabel, status));
         tile.updateTile();
     }
 
-    private String displayName(String name) {
-        return name == null || name.isEmpty() ? "Unknown SIM" : name;
+    private String displayName(String name, int slotIndex) {
+        if (name != null && !name.isEmpty()) return name;
+        return slotIndex >= 0 ? getString(R.string.sim_name, slotIndex + 1)
+                : getString(R.string.unknown_sim);
     }
 
     @SuppressLint("StartActivityAndCollapseDeprecated")
@@ -176,6 +192,6 @@ public final class DataSimTileService extends TileService {
         } else {
             startActivityAndCollapse(intent);
         }
-        updateTileStatus("Shizuku needed", Tile.STATE_INACTIVE);
+        updateTileStatus(getString(R.string.tile_status_shizuku_needed), Tile.STATE_INACTIVE);
     }
 }

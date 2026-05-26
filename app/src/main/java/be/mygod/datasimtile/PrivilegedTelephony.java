@@ -53,7 +53,8 @@ final class PrivilegedTelephony {
         SimRecord current = SimSelector.findCurrent(sims, currentSubId);
         SimRecord target = SimSelector.nextAfter(sims, currentSubId);
         return new TelephonySnapshot(TelephonySnapshot.STATUS_OK, null, currentSubId,
-                current == null ? null : current.name(), target == null ? -1 : target.subId(),
+                current == null ? -1 : current.slotIndex(), current == null ? null : current.name(),
+                target == null ? -1 : target.subId(), target == null ? -1 : target.slotIndex(),
                 target == null ? null : target.name(), sims.size());
     }
 
@@ -90,8 +91,7 @@ final class PrivilegedTelephony {
         for (Object item : (List<?>) value) {
             if (!(item instanceof SubscriptionInfo info)) continue;
             result.add(new SimRecord(info.getSubscriptionId(), info.getSimSlotIndex(),
-                    SimRecord.chooseName(info.getDisplayName(), info.getCarrierName(),
-                            info.getSimSlotIndex())));
+                    SimRecord.chooseName(info.getDisplayName(), info.getCarrierName())));
         }
         return result;
     }

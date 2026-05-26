@@ -1,11 +1,10 @@
 package be.mygod.datasimtile;
 
 record SimRecord(int subId, int slotIndex, String name) {
-    static String chooseName(CharSequence displayName, CharSequence carrierName, int slotIndex) {
+    static String chooseName(CharSequence displayName, CharSequence carrierName) {
         String display = clean(displayName);
         if (display != null) return display;
-        String carrier = clean(carrierName);
-        return carrier != null ? carrier : "SIM " + (slotIndex + 1);
+        return clean(carrierName);
     }
 
     private static String clean(CharSequence value) {
