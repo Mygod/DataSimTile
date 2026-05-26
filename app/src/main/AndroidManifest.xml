@@ -7,6 +7,7 @@
         android:hasFragileUserData="false"
         android:icon="@drawable/ic_data_sim"
         android:label="@string/tile_label"
+        android:localeConfig="@xml/locales_config"
         android:supportsRtl="true">
 
         <provider
@@ -23,10 +24,14 @@
             android:exported="true"
             android:finishOnTaskLaunch="true"
             android:noHistory="true"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
             android:stateNotNeeded="true"
             android:taskAffinity=""
             android:theme="@style/Theme.DataSimTile.Invisible">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
 
