@@ -1,8 +1,7 @@
 # Data SIM Tile
 
-[![CI](https://github.com/Mygod/DataSimTile/actions/workflows/ci.yml/badge.svg)](https://github.com/Mygod/DataSimTile/actions/workflows/ci.yml)
-[![API](https://img.shields.io/badge/API-24%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=24)
-[![Language: Java](https://img.shields.io/github/languages/top/Mygod/DataSimTile.svg)](https://github.com/Mygod/DataSimTile/search?l=java)
+[![Android 7-16.1](https://img.shields.io/badge/Android-7--16.1-3DDC84?logo=android&logoColor=white)](mobile/build.gradle.kts)
+[![Releases](https://img.shields.io/github/downloads/Mygod/DataSimTile/total.svg)](https://github.com/Mygod/DataSimTile/releases)
 
 [![Get it on Obtainium](https://github.com/ImranR98/Obtainium/raw/main/assets/graphics/badge_obtainium.png)](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/Mygod/DataSimTile)
 
