@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">I-SIM yedatha</string>
+    <string name="tile_status_shizuku_needed">Kudingeka i-Shizuku</string>
+    <string name="tile_status_switching">Iyashintsha...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, thepha ukuze ushintshele ku-%3$s</string>
+    <string name="unknown_sim">I-SIM engaziwa</string>
+    <string name="sim_name">I-SIM %1$d</string>
+</resources>

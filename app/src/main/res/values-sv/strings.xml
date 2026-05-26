@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">Data-SIM</string>
+    <string name="tile_status_shizuku_needed">Shizuku krävs</string>
+    <string name="tile_status_switching">Byter...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, tryck för att byta till %3$s</string>
+    <string name="unknown_sim">Okänt SIM-kort</string>
+    <string name="sim_name">SIM-kort %1$d</string>
+</resources>

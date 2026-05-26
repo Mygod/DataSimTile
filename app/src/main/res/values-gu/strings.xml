@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">ડેટા સિમ</string>
+    <string name="tile_status_shizuku_needed">Shizuku જરૂરી છે</string>
+    <string name="tile_status_switching">સ્વિચ કરી રહ્યાં છીએ...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, %3$s પર સ્વિચ કરવા ટૅપ કરો</string>
+    <string name="unknown_sim">અજાણ્યું સિમ</string>
+    <string name="sim_name">સિમ %1$d</string>
+</resources>

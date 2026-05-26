@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">SIM de dades</string>
+    <string name="tile_status_shizuku_needed">Cal Shizuku</string>
+    <string name="tile_status_switching">S’està canviant...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, toca per canviar a %3$s</string>
+    <string name="unknown_sim">SIM desconeguda</string>
+    <string name="sim_name">SIM %1$d</string>
+</resources>

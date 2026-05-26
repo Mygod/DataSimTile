@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">డేటా SIM</string>
+    <string name="tile_status_shizuku_needed">Shizuku అవసరం</string>
+    <string name="tile_status_switching">స్విచ్ అవుతోంది...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, %3$sకు మారడానికి ట్యాప్ చేయండి</string>
+    <string name="unknown_sim">తెలియని SIM</string>
+    <string name="sim_name">SIM %1$d</string>
+</resources>

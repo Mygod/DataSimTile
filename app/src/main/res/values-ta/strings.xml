@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">டேட்டா சிம்</string>
+    <string name="tile_status_shizuku_needed">Shizuku தேவை</string>
+    <string name="tile_status_switching">மாறுகிறது...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, %3$sக்கு மாற தட்டவும்</string>
+    <string name="unknown_sim">அறியப்படாத சிம்</string>
+    <string name="sim_name">சிம் %1$d</string>
+</resources>

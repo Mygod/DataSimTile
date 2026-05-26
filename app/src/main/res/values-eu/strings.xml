@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">Datuen SIMa</string>
+    <string name="tile_status_shizuku_needed">Shizuku behar da</string>
+    <string name="tile_status_switching">Aldatzen...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, sakatu %3$s(e)ra aldatzeko</string>
+    <string name="unknown_sim">SIM ezezaguna</string>
+    <string name="sim_name">%1$d. SIMa</string>
+</resources>

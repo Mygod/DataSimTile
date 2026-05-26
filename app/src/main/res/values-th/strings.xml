@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">ซิมข้อมูล</string>
+    <string name="tile_status_shizuku_needed">ต้องใช้ Shizuku</string>
+    <string name="tile_status_switching">กำลังเปลี่ยน...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, แตะเพื่อเปลี่ยนเป็น %3$s</string>
+    <string name="unknown_sim">ซิมที่ไม่รู้จัก</string>
+    <string name="sim_name">ซิม %1$d</string>
+</resources>

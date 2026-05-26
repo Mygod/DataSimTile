@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">SIM за податке</string>
+    <string name="tile_status_shizuku_needed">Потребан је Shizuku</string>
+    <string name="tile_status_switching">Пребацивање...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, додирните за прелазак на %3$s</string>
+    <string name="unknown_sim">Непозната SIM картица</string>
+    <string name="sim_name">SIM %1$d</string>
+</resources>

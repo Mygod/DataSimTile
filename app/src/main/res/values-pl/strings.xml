@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">SIM danych</string>
+    <string name="tile_status_shizuku_needed">Wymagany Shizuku</string>
+    <string name="tile_status_switching">Przełączanie...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, kliknij, aby przełączyć na %3$s</string>
+    <string name="unknown_sim">Nieznana karta SIM</string>
+    <string name="sim_name">Karta SIM %1$d</string>
+</resources>

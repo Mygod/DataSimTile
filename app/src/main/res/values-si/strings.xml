@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">දත්ත SIM</string>
+    <string name="tile_status_shizuku_needed">Shizuku අවශ්‍යයි</string>
+    <string name="tile_status_switching">මාරු කෙරේ...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, %3$s වෙත මාරු වීමට තට්ටු කරන්න</string>
+    <string name="unknown_sim">නොදන්නා SIM</string>
+    <string name="sim_name">SIM %1$d</string>
+</resources>

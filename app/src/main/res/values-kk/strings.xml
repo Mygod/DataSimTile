@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">Деректер SIM картасы</string>
+    <string name="tile_status_shizuku_needed">Shizuku қажет</string>
+    <string name="tile_status_switching">Ауыстырылуда...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, %3$s операторына ауысу үшін түртіңіз</string>
+    <string name="unknown_sim">Белгісіз SIM картасы</string>
+    <string name="sim_name">SIM картасы %1$d</string>
+</resources>

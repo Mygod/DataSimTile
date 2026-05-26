@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">SIM pentru date</string>
+    <string name="tile_status_shizuku_needed">Shizuku este necesar</string>
+    <string name="tile_status_switching">Se comută...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, atingeți pentru a comuta la %3$s</string>
+    <string name="unknown_sim">SIM necunoscut</string>
+    <string name="sim_name">SIM %1$d</string>
+</resources>

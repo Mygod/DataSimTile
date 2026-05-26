@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">SIM data</string>
+    <string name="tile_status_shizuku_needed">Shizuku diperlukan</string>
+    <string name="tile_status_switching">Beralih...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, ketuk untuk beralih ke %3$s</string>
+    <string name="unknown_sim">SIM tidak dikenal</string>
+    <string name="sim_name">SIM %1$d</string>
+</resources>

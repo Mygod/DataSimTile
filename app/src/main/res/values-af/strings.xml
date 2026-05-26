@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">Data-SIM</string>
+    <string name="tile_status_shizuku_needed">Shizuku benodig</string>
+    <string name="tile_status_switching">Skakel tans oor...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, tik om na %3$s oor te skakel</string>
+    <string name="unknown_sim">Onbekende SIM</string>
+    <string name="sim_name">SIM %1$d</string>
+</resources>

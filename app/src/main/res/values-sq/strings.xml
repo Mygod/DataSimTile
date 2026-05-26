@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">SIM për të dhëna</string>
+    <string name="tile_status_shizuku_needed">Nevojitet Shizuku</string>
+    <string name="tile_status_switching">Po kalon...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, trokit për të kaluar te %3$s</string>
+    <string name="unknown_sim">SIM i panjohur</string>
+    <string name="sim_name">SIM %1$d</string>
+</resources>

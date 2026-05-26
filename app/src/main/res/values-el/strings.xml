@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">SIM δεδομένων</string>
+    <string name="tile_status_shizuku_needed">Απαιτείται Shizuku</string>
+    <string name="tile_status_switching">Εναλλαγή...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, πατήστε για εναλλαγή σε %3$s</string>
+    <string name="unknown_sim">Άγνωστη SIM</string>
+    <string name="sim_name">SIM %1$d</string>
+</resources>

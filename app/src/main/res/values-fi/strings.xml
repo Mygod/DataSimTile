@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">Data-SIM</string>
+    <string name="tile_status_shizuku_needed">Shizuku tarvitaan</string>
+    <string name="tile_status_switching">Vaihdetaan...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, vaihda kohtaan %3$s napauttamalla</string>
+    <string name="unknown_sim">Tuntematon SIM-kortti</string>
+    <string name="sim_name">SIM-kortti %1$d</string>
+</resources>

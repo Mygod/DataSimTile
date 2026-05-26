@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">行動數據 SIM 卡</string>
+    <string name="tile_status_shizuku_needed">需要 Shizuku</string>
+    <string name="tile_status_switching">正在切換...</string>
+    <string name="tile_content_description">%1$s，%2$s</string>
+    <string name="tile_content_description_switch">%1$s，%2$s，輕觸即可切換到「%3$s」</string>
+    <string name="unknown_sim">不明 SIM 卡</string>
+    <string name="sim_name">SIM 卡 %1$d</string>
+</resources>

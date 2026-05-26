@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">Daten-SIM</string>
+    <string name="tile_status_shizuku_needed">Shizuku erforderlich</string>
+    <string name="tile_status_switching">Wechsel läuft...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, tippen, um zu %3$s zu wechseln</string>
+    <string name="unknown_sim">Unbekannte SIM</string>
+    <string name="sim_name">SIM %1$d</string>
+</resources>

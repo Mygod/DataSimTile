@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">डेटा सिम</string>
+    <string name="tile_status_shizuku_needed">Shizuku आवश्यक आहे</string>
+    <string name="tile_status_switching">स्विच करत आहे...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, %3$s वर स्विच करण्यासाठी टॅप करा</string>
+    <string name="unknown_sim">अज्ञात सिम</string>
+    <string name="sim_name">सिम %1$d</string>
+</resources>

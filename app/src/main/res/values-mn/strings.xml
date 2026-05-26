@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">Дата SIM</string>
+    <string name="tile_status_shizuku_needed">Shizuku шаардлагатай</string>
+    <string name="tile_status_switching">Сэлгэж байна...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, %3$s рүү сэлгэхийн тулд товшино уу</string>
+    <string name="unknown_sim">Тодорхойгүй SIM</string>
+    <string name="sim_name">SIM %1$d</string>
+</resources>

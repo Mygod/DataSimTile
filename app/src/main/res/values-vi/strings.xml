@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">SIM dữ liệu</string>
+    <string name="tile_status_shizuku_needed">Cần Shizuku</string>
+    <string name="tile_status_switching">Đang chuyển...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, nhấn để chuyển sang %3$s</string>
+    <string name="unknown_sim">SIM không xác định</string>
+    <string name="sim_name">SIM %1$d</string>
+</resources>

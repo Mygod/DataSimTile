@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">Datová SIM karta</string>
+    <string name="tile_status_shizuku_needed">Je potřeba Shizuku</string>
+    <string name="tile_status_switching">Přepínání...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, klepnutím přepnete na %3$s</string>
+    <string name="unknown_sim">Neznámá SIM karta</string>
+    <string name="sim_name">SIM karta %1$d</string>
+</resources>

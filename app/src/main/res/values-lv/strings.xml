@@ -1,0 +1,9 @@
+<resources>
+    <string name="tile_label">Datu SIM</string>
+    <string name="tile_status_shizuku_needed">Nepieciešams Shizuku</string>
+    <string name="tile_status_switching">Notiek pārslēgšanās...</string>
+    <string name="tile_content_description">%1$s, %2$s</string>
+    <string name="tile_content_description_switch">%1$s, %2$s, pieskarieties, lai pārslēgtos uz %3$s</string>
+    <string name="unknown_sim">Nezināma SIM karte</string>
+    <string name="sim_name">SIM karte %1$d</string>
+</resources>
