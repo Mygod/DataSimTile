@@ -12,7 +12,6 @@ final class TileStateStore {
     static final String KEY_CAN_SWITCH = "canSwitch";
 
     private static final String PREFS = "tile";
-    private static final String KEY_TILE_ADDED = "tileAdded";
 
     private TileStateStore() {
     }
@@ -20,14 +19,6 @@ final class TileStateStore {
     static SharedPreferences prefs(Context context) {
         return context.createDeviceProtectedStorageContext()
                 .getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-    }
-
-    static boolean isTileAdded(Context context) {
-        return prefs(context).getBoolean(KEY_TILE_ADDED, false);
-    }
-
-    static void setTileAdded(Context context, boolean added) {
-        prefs(context).edit().putBoolean(KEY_TILE_ADDED, added).apply();
     }
 
     static boolean isUserUnlocked(Context context) {

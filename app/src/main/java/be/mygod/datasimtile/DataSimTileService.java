@@ -57,19 +57,12 @@ public final class DataSimTileService extends TileService {
 
     @Override
     public void onTileAdded() {
-        TileRefreshScheduler.tileAdded(this);
         refreshFromShizukuIfAllowed();
-    }
-
-    @Override
-    public void onTileRemoved() {
-        TileRefreshScheduler.tileRemoved(this);
     }
 
     @Override
     public void onStartListening() {
         TileStateStore.migrateCacheIfUnlocked(this);
-        TileRefreshScheduler.tileAdded(this);
         if (!updateTileFromCache()) {
             updateTileStatus(getString(R.string.tile_status_shizuku_needed), Tile.STATE_INACTIVE);
         }
