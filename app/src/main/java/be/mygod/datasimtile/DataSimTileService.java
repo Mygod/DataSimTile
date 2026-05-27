@@ -3,11 +3,11 @@ package be.mygod.datasimtile;
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.UserManager;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 
@@ -37,7 +37,6 @@ public final class DataSimTileService extends TileService {
     @Override
     public void onCreate() {
         super.onCreate();
-        TileStateStore.migrateCacheIfUnlocked(this);
         try {
             Shizuku.addBinderReceivedListener(binderListener);
             Shizuku.addRequestPermissionResultListener(permissionListener);
@@ -62,10 +61,6 @@ public final class DataSimTileService extends TileService {
 
     @Override
     public void onStartListening() {
-        TileStateStore.migrateCacheIfUnlocked(this);
-        if (!updateTileFromCache()) {
-            updateTileStatus(getString(R.string.tile_status_shizuku_needed), Tile.STATE_INACTIVE);
-        }
         refreshFromShizukuIfAllowed();
     }
 
@@ -77,7 +72,7 @@ public final class DataSimTileService extends TileService {
         }
         try {
             if (Shizuku.checkSelfPermission() != PackageManager.PERMISSION_GRANTED) {
-                if (!TileStateStore.isUserUnlocked(this)) {
+                if (!isUserUnlocked()) {
                     updateTileStatus(getString(R.string.tile_status_shizuku_needed),
                             Tile.STATE_INACTIVE);
                 } else if (Shizuku.shouldShowRequestPermissionRationale()) {
@@ -98,7 +93,6 @@ public final class DataSimTileService extends TileService {
                 if (snapshot.hasError()) {
                     MAIN.post(this::openSimSettingsIfUnlocked);
                 } else {
-                    cache(snapshot);
                     MAIN.post(() -> updateTile(snapshot));
                 }
             } catch (Exception ignored) {
@@ -118,39 +112,11 @@ public final class DataSimTileService extends TileService {
             try {
                 TelephonySnapshot snapshot = ShizukuTelephonyClient.load(this);
                 if (!snapshot.hasError()) {
-                    cache(snapshot);
                     MAIN.post(() -> updateTile(snapshot));
                 }
             } catch (Exception ignored) {
             }
         });
-    }
-
-    private boolean updateTileFromCache() {
-        SharedPreferences prefs = TileStateStore.prefs(this);
-        String currentName = prefs.getString(TileStateStore.KEY_CURRENT_NAME, null);
-        int currentSlotIndex = prefs.getInt(TileStateStore.KEY_CURRENT_SLOT_INDEX, -1);
-        String targetName = prefs.getString(TileStateStore.KEY_TARGET_NAME, null);
-        int targetSlotIndex = prefs.getInt(TileStateStore.KEY_TARGET_SLOT_INDEX, -1);
-        boolean canSwitch = prefs.getBoolean(TileStateStore.KEY_CAN_SWITCH, false);
-        if (currentName == null && currentSlotIndex < 0 && targetName == null
-                && targetSlotIndex < 0 && !canSwitch) {
-            return false;
-        }
-        updateTile(new TelephonySnapshot(TelephonySnapshot.STATUS_OK, null, -1,
-                currentSlotIndex, currentName, canSwitch ? 0 : -1, targetSlotIndex, targetName,
-                canSwitch ? 2 : 0));
-        return true;
-    }
-
-    private void cache(TelephonySnapshot snapshot) {
-        TileStateStore.prefs(this).edit()
-                .putString(TileStateStore.KEY_CURRENT_NAME, snapshot.currentName())
-                .putInt(TileStateStore.KEY_CURRENT_SLOT_INDEX, snapshot.currentSlotIndex())
-                .putString(TileStateStore.KEY_TARGET_NAME, snapshot.targetName())
-                .putInt(TileStateStore.KEY_TARGET_SLOT_INDEX, snapshot.targetSlotIndex())
-                .putBoolean(TileStateStore.KEY_CAN_SWITCH, snapshot.canSwitch())
-                .apply();
     }
 
     private void updateTile(TelephonySnapshot snapshot) {
@@ -190,11 +156,16 @@ public final class DataSimTileService extends TileService {
     }
 
     private void openSimSettingsIfUnlocked() {
-        if (TileStateStore.isUserUnlocked(this)) {
+        if (isUserUnlocked()) {
             openSimSettings();
         } else {
             updateTileStatus(getString(R.string.tile_status_shizuku_needed), Tile.STATE_INACTIVE);
         }
+    }
+
+    private boolean isUserUnlocked() {
+        UserManager userManager = getSystemService(UserManager.class);
+        return userManager == null || userManager.isUserUnlocked();
     }
 
     @SuppressLint("StartActivityAndCollapseDeprecated")
