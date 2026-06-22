@@ -1,14 +1,21 @@
 package be.mygod.datasimtile;
 
+import android.content.Context;
+import android.os.Build;
 import android.os.IBinder;
-import android.os.Process;
 import android.telephony.SubscriptionInfo;
 import android.telephony.TelephonyManager;
+
+import org.lsposed.hiddenapibypass.HiddenApiBypass;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+
+import rikka.shizuku.Shizuku;
+import rikka.shizuku.ShizukuBinderWrapper;
+import rikka.shizuku.SystemServiceHelper;
 
 final class PrivilegedTelephony {
     private static final String SHELL_PACKAGE = "com.android.shell";
@@ -17,16 +24,22 @@ final class PrivilegedTelephony {
     private static final String TELEPHONY_SERVICE = "phone";
     private static final String TELEPHONY_INTERFACE = "com.android.internal.telephony.ITelephony";
     private static final int ROOT_UID = 0;
+    private static final int SHELL_UID = 2000;
+    private static boolean hiddenApisExempted;
+    private static int privilegedUid = -1;
     private static String callingPackage = SHELL_PACKAGE;
 
     private PrivilegedTelephony() {
     }
 
-    static void setCallingPackage(String packageName) {
-        callingPackage = Process.myUid() == 2000 || packageName == null ? SHELL_PACKAGE : packageName;
+    private static void configure(Context context) {
+        privilegedUid = Shizuku.getUid();
+        callingPackage = privilegedUid == SHELL_UID || context == null ? SHELL_PACKAGE
+                : context.getPackageName();
     }
 
-    static TelephonySnapshot load() throws Exception {
+    static TelephonySnapshot load(Context context) throws Exception {
+        configure(context);
         return snapshot(getSubscriptionService());
     }
 
@@ -36,7 +49,8 @@ final class PrivilegedTelephony {
      * <p>
      * <a href="https://android.googlesource.com/platform/packages/apps/Settings/+/7c598253ff60f06f8e6fe046f18fd88e9daa72d3/src/com/android/settings/sim/SimDialogActivity.java#357">AOSP Settings</a>
      */
-    static TelephonySnapshot toggle() throws Exception {
+    static TelephonySnapshot toggle(Context context) throws Exception {
+        configure(context);
         Object service = getSubscriptionService();
         TelephonySnapshot before = snapshot(service);
         if (!before.canSwitch()) return before;
@@ -52,10 +66,10 @@ final class PrivilegedTelephony {
         List<SimRecord> sims = SimSelector.sortedActive(getActiveSubscriptions(service));
         SimRecord current = SimSelector.findCurrent(sims, currentSubId);
         SimRecord target = SimSelector.nextAfter(sims, currentSubId);
-        return new TelephonySnapshot(TelephonySnapshot.STATUS_OK, null, currentSubId,
-                current == null ? -1 : current.slotIndex(), current == null ? null : current.name(),
-                target == null ? -1 : target.subId(), target == null ? -1 : target.slotIndex(),
-                target == null ? null : target.name(), sims.size());
+        return new TelephonySnapshot(currentSubId, current == null ? -1 : current.slotIndex(),
+                current == null ? null : current.name(), target == null ? -1 : target.subId(),
+                target == null ? -1 : target.slotIndex(), target == null ? null : target.name(),
+                sims.size());
     }
 
     private static Object getSubscriptionService() throws Exception {
@@ -63,12 +77,20 @@ final class PrivilegedTelephony {
     }
 
     private static Object getService(String serviceName, String interfaceName) throws Exception {
-        Class<?> serviceManager = Class.forName("android.os.ServiceManager");
-        IBinder binder = (IBinder) serviceManager.getMethod("getService", String.class)
-                .invoke(null, serviceName);
+        ensureHiddenApisAccessible();
+        IBinder binder = SystemServiceHelper.getSystemService(serviceName);
         if (binder == null) throw new IllegalStateException(serviceName + " service unavailable");
         Class<?> stub = Class.forName(interfaceName + "$Stub");
-        return stub.getMethod("asInterface", IBinder.class).invoke(null, binder);
+        return stub.getMethod("asInterface", IBinder.class)
+                .invoke(null, new ShizukuBinderWrapper(binder));
+    }
+
+    private static void ensureHiddenApisAccessible() {
+        if (Build.VERSION.SDK_INT < 28 || hiddenApisExempted) return;
+        if (!HiddenApiBypass.addHiddenApiExemptions("")) {
+            throw new IllegalStateException("hidden API exemptions unavailable");
+        }
+        hiddenApisExempted = true;
     }
 
     private static List<SimRecord> getActiveSubscriptions(Object service) throws Exception {
@@ -120,7 +142,7 @@ final class PrivilegedTelephony {
     }
 
     private static String dataCallingPackage() {
-        return Process.myUid() == ROOT_UID ? null : callingPackage;
+        return privilegedUid == ROOT_UID ? null : callingPackage;
     }
 
     private static Object invoke(Object service, String interfaceName, String name,

@@ -4,15 +4,14 @@ plugins {
 
 android {
     namespace = "be.mygod.datasimtile"
-    compileSdk = 36
-    compileSdkMinor = 1
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "be.mygod.datasimtile"
         minSdk = 24
-        targetSdk = 36
-        versionCode = 4
-        versionName = "1.1.1"
+        targetSdk = 37
+        versionCode = 5
+        versionName = "1.2.0"
     }
 
     buildFeatures {
@@ -46,5 +45,6 @@ dependencies {
     compileOnly("androidx.annotation:annotation:1.10.0")
     compileOnly("dev.rikka.shizuku:api:13.1.5")
     implementation("dev.rikka.shizuku:provider:13.1.5")
+    implementation("org.lsposed.hiddenapibypass:hiddenapibypass:6.1")
     testImplementation("junit:junit:4.13.2")
 }

@@ -89,12 +89,8 @@ public final class DataSimTileService extends TileService {
         updateTileStatus(getString(R.string.tile_status_switching), Tile.STATE_INACTIVE);
         WORKER.execute(() -> {
             try {
-                TelephonySnapshot snapshot = ShizukuTelephonyClient.toggle(this);
-                if (snapshot.hasError()) {
-                    MAIN.post(this::openSimSettingsIfUnlocked);
-                } else {
-                    MAIN.post(() -> updateTile(snapshot));
-                }
+                TelephonySnapshot snapshot = PrivilegedTelephony.toggle(this);
+                MAIN.post(() -> updateTile(snapshot));
             } catch (Exception ignored) {
                 MAIN.post(this::openSimSettingsIfUnlocked);
             }
@@ -110,10 +106,8 @@ public final class DataSimTileService extends TileService {
         }
         WORKER.execute(() -> {
             try {
-                TelephonySnapshot snapshot = ShizukuTelephonyClient.load(this);
-                if (!snapshot.hasError()) {
-                    MAIN.post(() -> updateTile(snapshot));
-                }
+                TelephonySnapshot snapshot = PrivilegedTelephony.load(this);
+                MAIN.post(() -> updateTile(snapshot));
             } catch (Exception ignored) {
             }
         });

@@ -1,6 +1,6 @@
 # Data SIM Tile
 
-[![Android 7-16.1](https://img.shields.io/badge/Android-7--16.1-3DDC84?logo=android&logoColor=white)](mobile/build.gradle.kts)
+[![Android 7-17](https://img.shields.io/badge/Android-7--17-3DDC84?logo=android&logoColor=white)](mobile/build.gradle.kts)
 [![Releases](https://img.shields.io/github/downloads/Mygod/DataSimTile/total.svg)](https://github.com/Mygod/DataSimTile/releases)
 
 [![Get it on Obtainium](https://github.com/ImranR98/Obtainium/raw/main/assets/graphics/badge_obtainium.png)](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/Mygod/DataSimTile)
@@ -37,8 +37,8 @@ so Shizuku is the only supported path.
 
 ### Why does tapping the tile open SIM settings?
 
-The tile opens SIM settings when Shizuku is missing, permission was denied, the Shizuku user service cannot bind, or the
-privileged telephony call fails.
+The tile opens SIM settings when Shizuku is missing, permission was denied, Shizuku cannot proxy the privileged Binder
+call, or the privileged telephony call fails.
 
 ### Why is mobile data enabled after switching?
 
@@ -62,7 +62,6 @@ API qualifiers below describe when this app uses each member.
 
 Greylisted/blacklisted APIs or internal constants: (some constants are hardcoded or implicitly used)
 
-* `Landroid/os/ServiceManager;->getService(Ljava/lang/String;)Landroid/os/IBinder;,unsupported`
 * `Lcom/android/internal/telephony/ISub$Stub;->asInterface(Landroid/os/IBinder;)Lcom/android/internal/telephony/ISub;`
 * (since API 35) `Lcom/android/internal/telephony/ISub;->getActiveSubscriptionInfoList(Ljava/lang/String;Ljava/lang/String;Z)Ljava/util/List;,blocked`
 * (API 30-34) `Lcom/android/internal/telephony/ISub;->getActiveSubscriptionInfoList(Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;`
