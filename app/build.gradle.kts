@@ -5,6 +5,7 @@ plugins {
 android {
     namespace = "be.mygod.datasimtile"
     compileSdk = 37
+    enableKotlin = false
 
     defaultConfig {
         applicationId = "be.mygod.datasimtile"
