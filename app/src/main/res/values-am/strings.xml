@@ -2,6 +2,7 @@
     <string name="tile_label">የውሂብ ሲም</string>
     <string name="tile_status_shizuku_needed">Shizuku ያስፈልጋል</string>
     <string name="tile_status_switching">በመቀየር ላይ...</string>
+    <string name="tile_status_switch_failed">መቀየር አልተቻለም</string>
     <string name="tile_content_description">%1$s፣ %2$s</string>
     <string name="tile_content_description_switch">%1$s፣ %2$s፣ ወደ %3$s ለመቀየር መታ ያድርጉ</string>
     <string name="unknown_sim">ያልታወቀ ሲም</string>

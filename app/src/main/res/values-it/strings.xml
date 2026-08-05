@@ -2,6 +2,7 @@
     <string name="tile_label">SIM dati</string>
     <string name="tile_status_shizuku_needed">Shizuku necessario</string>
     <string name="tile_status_switching">Cambio in corso...</string>
+    <string name="tile_status_switch_failed">Impossibile eseguire la commutazione</string>
     <string name="tile_content_description">%1$s, %2$s</string>
     <string name="tile_content_description_switch">%1$s, %2$s, tocca per passare a %3$s</string>
     <string name="unknown_sim">SIM sconosciuta</string>

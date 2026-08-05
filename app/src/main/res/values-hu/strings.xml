@@ -2,6 +2,7 @@
     <string name="tile_label">Adat-SIM</string>
     <string name="tile_status_shizuku_needed">Shizuku szükséges</string>
     <string name="tile_status_switching">Váltás...</string>
+    <string name="tile_status_switch_failed">Sikertelen átváltás</string>
     <string name="tile_content_description">%1$s, %2$s</string>
     <string name="tile_content_description_switch">%1$s, %2$s, koppintson a(z) %3$s elemre váltáshoz</string>
     <string name="unknown_sim">Ismeretlen SIM</string>

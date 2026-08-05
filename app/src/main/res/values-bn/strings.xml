@@ -2,6 +2,7 @@
     <string name="tile_label">ডেটা সিম</string>
     <string name="tile_status_shizuku_needed">Shizuku প্রয়োজন</string>
     <string name="tile_status_switching">পরিবর্তন করা হচ্ছে...</string>
+    <string name="tile_status_switch_failed">পাল্টানো যায়নি</string>
     <string name="tile_content_description">%1$s, %2$s</string>
     <string name="tile_content_description_switch">%1$s, %2$s, %3$s-এ পরিবর্তন করতে ট্যাপ করুন</string>
     <string name="unknown_sim">অজানা সিম</string>

@@ -2,6 +2,7 @@
     <string name="tile_label">Gagna-SIM</string>
     <string name="tile_status_shizuku_needed">Shizuku er krafist</string>
     <string name="tile_status_switching">Skiptir...</string>
+    <string name="tile_status_switch_failed">Ekki tókst að skipta</string>
     <string name="tile_content_description">%1$s, %2$s</string>
     <string name="tile_content_description_switch">%1$s, %2$s, ýttu til að skipta yfir í %3$s</string>
     <string name="unknown_sim">Óþekkt SIM</string>

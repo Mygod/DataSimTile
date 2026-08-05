@@ -2,6 +2,7 @@
     <string name="tile_label">데이터 SIM</string>
     <string name="tile_status_shizuku_needed">Shizuku 필요</string>
     <string name="tile_status_switching">전환 중...</string>
+    <string name="tile_status_switch_failed">전환할 수 없습니다.</string>
     <string name="tile_content_description">%1$s, %2$s</string>
     <string name="tile_content_description_switch">%1$s, %2$s, 탭하여 %3$s(으)로 전환</string>
     <string name="unknown_sim">알 수 없는 SIM</string>

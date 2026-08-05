@@ -37,8 +37,9 @@ so Shizuku is the only supported path.
 
 ### Why does tapping the tile open SIM settings?
 
-The tile opens SIM settings when Shizuku is missing, permission was denied, Shizuku cannot proxy the privileged Binder
-call, or the privileged telephony call fails.
+The tile briefly waits for Shizuku if its process is still starting. It opens SIM settings when Shizuku is missing,
+permission was denied, Shizuku cannot proxy the privileged Binder call, or the privileged telephony call fails. The tile
+distinguishes Shizuku authorization failures from telephony switching failures in its subtitle.
 
 ### Why is mobile data enabled after switching?
 

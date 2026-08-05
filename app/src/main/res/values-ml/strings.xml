@@ -2,6 +2,7 @@
     <string name="tile_label">ഡാറ്റ സിം</string>
     <string name="tile_status_shizuku_needed">Shizuku ആവശ്യമാണ്</string>
     <string name="tile_status_switching">മാറുന്നു...</string>
+    <string name="tile_status_switch_failed">സ്വിച്ച് ചെയ്യാനായില്ല</string>
     <string name="tile_content_description">%1$s, %2$s</string>
     <string name="tile_content_description_switch">%1$s, %2$s, %3$s എന്നതിലേക്ക് മാറാൻ ടാപ്പ് ചെയ്യുക</string>
     <string name="unknown_sim">അജ്ഞാത സിം</string>

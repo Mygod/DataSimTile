@@ -2,6 +2,7 @@
     <string name="tile_label">سیم‌کارت داده</string>
     <string name="tile_status_shizuku_needed">Shizuku لازم است</string>
     <string name="tile_status_switching">درحال تغییر...</string>
+    <string name="tile_status_switch_failed">تغییر وضعیت انجام نشد</string>
     <string name="tile_content_description">%1$s، %2$s</string>
     <string name="tile_content_description_switch">%1$s، %2$s، برای تغییر به %3$s ضربه بزنید</string>
     <string name="unknown_sim">سیم‌کارت ناشناس</string>

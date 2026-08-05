@@ -2,6 +2,7 @@
     <string name="tile_label">شريحة بيانات SIM</string>
     <string name="tile_status_shizuku_needed">يلزم Shizuku</string>
     <string name="tile_status_switching">جارٍ التبديل...</string>
+    <string name="tile_status_switch_failed">تعذّر التبديل</string>
     <string name="tile_content_description">%1$s، %2$s</string>
     <string name="tile_content_description_switch">%1$s، %2$s، انقر للتبديل إلى %3$s</string>
     <string name="unknown_sim">شريحة SIM غير معروفة</string>

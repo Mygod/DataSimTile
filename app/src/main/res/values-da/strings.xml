@@ -2,6 +2,7 @@
     <string name="tile_label">Data-SIM</string>
     <string name="tile_status_shizuku_needed">Shizuku er påkrævet</string>
     <string name="tile_status_switching">Skifter...</string>
+    <string name="tile_status_switch_failed">Der kunne ikke skiftes</string>
     <string name="tile_content_description">%1$s, %2$s</string>
     <string name="tile_content_description_switch">%1$s, %2$s, tryk for at skifte til %3$s</string>
     <string name="unknown_sim">Ukendt SIM-kort</string>

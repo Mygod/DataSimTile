@@ -2,6 +2,7 @@
     <string name="tile_label">Andmeside SIM</string>
     <string name="tile_status_shizuku_needed">Vaja on Shizukut</string>
     <string name="tile_status_switching">Vahetamine...</string>
+    <string name="tile_status_switch_failed">Ei õnnestunud vahetada</string>
     <string name="tile_content_description">%1$s, %2$s</string>
     <string name="tile_content_description_switch">%1$s, %2$s, puudutage, et lülituda SIM-ile %3$s</string>
     <string name="unknown_sim">Tundmatu SIM</string>

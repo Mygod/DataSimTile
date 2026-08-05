@@ -2,6 +2,7 @@
     <string name="tile_label">Տվյալների SIM</string>
     <string name="tile_status_shizuku_needed">Պահանջվում է Shizuku</string>
     <string name="tile_status_switching">Փոխարկվում է...</string>
+    <string name="tile_status_switch_failed">Չհաջողվեց փոխարկել</string>
     <string name="tile_content_description">%1$s, %2$s</string>
     <string name="tile_content_description_switch">%1$s, %2$s, հպեք՝ %3$s-ին անցնելու համար</string>
     <string name="unknown_sim">Անհայտ SIM</string>

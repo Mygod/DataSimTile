@@ -2,6 +2,7 @@
     <string name="tile_label">ਡਾਟਾ ਸਿਮ</string>
     <string name="tile_status_shizuku_needed">Shizuku ਦੀ ਲੋੜ ਹੈ</string>
     <string name="tile_status_switching">ਸਵਿੱਚ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ...</string>
+    <string name="tile_status_switch_failed">ਬਦਲਿਆ ਨਹੀਂ ਜਾ ਸਕਿਆ</string>
     <string name="tile_content_description">%1$s, %2$s</string>
     <string name="tile_content_description_switch">%1$s, %2$s, %3$s ’ਤੇ ਸਵਿੱਚ ਕਰਨ ਲਈ ਟੈਪ ਕਰੋ</string>
     <string name="unknown_sim">ਅਗਿਆਤ ਸਿਮ</string>

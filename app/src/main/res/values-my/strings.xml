@@ -2,6 +2,7 @@
     <string name="tile_label">ဒေတာ SIM</string>
     <string name="tile_status_shizuku_needed">Shizuku လိုအပ်သည်</string>
     <string name="tile_status_switching">ပြောင်းနေသည်...</string>
+    <string name="tile_status_switch_failed">ပြောင်း၍မရပါ</string>
     <string name="tile_content_description">%1$s၊ %2$s</string>
     <string name="tile_content_description_switch">%1$s၊ %2$s၊ %3$s သို့ ပြောင်းရန် တို့ပါ</string>
     <string name="unknown_sim">မသိသော SIM</string>

@@ -2,6 +2,7 @@
     <string name="tile_label">Veri SIM’i</string>
     <string name="tile_status_shizuku_needed">Shizuku gerekli</string>
     <string name="tile_status_switching">Geçiliyor...</string>
+    <string name="tile_status_switch_failed">Geçiş yapılamadı</string>
     <string name="tile_content_description">%1$s, %2$s</string>
     <string name="tile_content_description_switch">%1$s, %2$s, %3$s operatörüne geçmek için dokunun</string>
     <string name="unknown_sim">Bilinmeyen SIM</string>

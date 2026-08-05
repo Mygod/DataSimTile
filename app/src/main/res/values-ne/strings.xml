@@ -2,6 +2,7 @@
     <string name="tile_label">डेटा SIM</string>
     <string name="tile_status_shizuku_needed">Shizuku चाहिन्छ</string>
     <string name="tile_status_switching">स्विच गरिँदै छ...</string>
+    <string name="tile_status_switch_failed">बदल्न सकिएन</string>
     <string name="tile_content_description">%1$s, %2$s</string>
     <string name="tile_content_description_switch">%1$s, %2$s, %3$s मा स्विच गर्न ट्याप गर्नुहोस्</string>
     <string name="unknown_sim">अज्ञात SIM</string>

@@ -2,6 +2,7 @@
     <string name="tile_label">მონაცემთა SIM</string>
     <string name="tile_status_shizuku_needed">საჭიროა Shizuku</string>
     <string name="tile_status_switching">გადართვა...</string>
+    <string name="tile_status_switch_failed">გადართვა ვერ მოხერხდა</string>
     <string name="tile_content_description">%1$s, %2$s</string>
     <string name="tile_content_description_switch">%1$s, %2$s, შეეხეთ %3$s-ზე გადასართავად</string>
     <string name="unknown_sim">უცნობი SIM</string>

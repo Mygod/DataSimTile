@@ -2,6 +2,7 @@
     <string name="tile_label">ស៊ីមទិន្នន័យ</string>
     <string name="tile_status_shizuku_needed">ត្រូវការ Shizuku</string>
     <string name="tile_status_switching">កំពុងប្ដូរ...</string>
+    <string name="tile_status_switch_failed">មិន​អាច​ប្ដូរ​បានទេ</string>
     <string name="tile_content_description">%1$s, %2$s</string>
     <string name="tile_content_description_switch">%1$s, %2$s, ចុចដើម្បីប្ដូរទៅ %3$s</string>
     <string name="unknown_sim">ស៊ីមមិនស្គាល់</string>

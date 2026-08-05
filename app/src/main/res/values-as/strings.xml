@@ -2,6 +2,7 @@
     <string name="tile_label">ডেটা ছিম</string>
     <string name="tile_status_shizuku_needed">Shizukuৰ প্ৰয়োজন</string>
     <string name="tile_status_switching">সলনি কৰি থকা হৈছে...</string>
+    <string name="tile_status_switch_failed">সলনি কৰিব পৰা নগ\'ল</string>
     <string name="tile_content_description">%1$s, %2$s</string>
     <string name="tile_content_description_switch">%1$s, %2$s, %3$sলৈ সলনি কৰিবলৈ টেপ কৰক</string>
     <string name="unknown_sim">অজ্ঞাত ছিম</string>
