@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.RemoteException;
 import android.os.UserManager;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
@@ -28,7 +29,6 @@ public final class DataSimTileService extends TileService {
     }
 
     private static final String TAG = "DataSimTile";
-    private static final int REQUEST_SHIZUKU_PERMISSION = 1;
     private static final long SHIZUKU_BINDER_TIMEOUT_MILLIS = 3_000;
     private static final Handler MAIN = new Handler(Looper.getMainLooper());
     private static final ExecutorService WORKER = Executors.newSingleThreadExecutor(r -> {
@@ -36,8 +36,10 @@ public final class DataSimTileService extends TileService {
         thread.setDaemon(true);
         return thread;
     });
+    private static int nextPermissionRequestCode;
 
     private ClickState clickState = ClickState.IDLE;
+    private int permissionRequestCode;
     private final Runnable binderTimeout = () -> {
         if (clickState != ClickState.WAITING_FOR_BINDER) return;
         clickState = ClickState.IDLE;
@@ -52,42 +54,31 @@ public final class DataSimTileService extends TileService {
     };
     private final Shizuku.OnRequestPermissionResultListener permissionListener =
             (requestCode, grantResult) -> {
-                if (requestCode != REQUEST_SHIZUKU_PERMISSION) return;
-                if (clickState == ClickState.WAITING_FOR_PERMISSION) {
-                    if (grantResult == PackageManager.PERMISSION_GRANTED) {
-                        clickState = ClickState.WAITING_FOR_BINDER;
-                        continueClick();
-                    } else {
-                        clickState = ClickState.IDLE;
-                        updateTileStatus(getString(R.string.tile_status_shizuku_needed),
-                                Tile.STATE_INACTIVE);
-                    }
-                } else if (grantResult == PackageManager.PERMISSION_GRANTED) {
-                    refreshFromShizukuIfAllowed();
+                if (requestCode != permissionRequestCode ||
+                        clickState != ClickState.WAITING_FOR_PERMISSION) return;
+                if (grantResult == PackageManager.PERMISSION_GRANTED) {
+                    clickState = ClickState.WAITING_FOR_BINDER;
+                    continueClick();
+                } else {
+                    clickState = ClickState.IDLE;
+                    updateTileStatus(getString(R.string.tile_status_shizuku_needed),
+                            Tile.STATE_INACTIVE);
                 }
             };
 
     @Override
     public void onCreate() {
         super.onCreate();
-        try {
-            Shizuku.addBinderReceivedListener(binderListener);
-            Shizuku.addRequestPermissionResultListener(permissionListener);
-        } catch (RuntimeException e) {
-            Log.w(TAG, "Failed to register Shizuku listeners", e);
-        }
+        Shizuku.addBinderReceivedListener(binderListener);
+        Shizuku.addRequestPermissionResultListener(permissionListener);
     }
 
     @Override
     public void onDestroy() {
         MAIN.removeCallbacks(binderTimeout);
         clickState = ClickState.IDLE;
-        try {
-            Shizuku.removeBinderReceivedListener(binderListener);
-            Shizuku.removeRequestPermissionResultListener(permissionListener);
-        } catch (RuntimeException e) {
-            Log.w(TAG, "Failed to remove Shizuku listeners", e);
-        }
+        Shizuku.removeBinderReceivedListener(binderListener);
+        Shizuku.removeRequestPermissionResultListener(permissionListener);
         super.onDestroy();
     }
 
@@ -103,42 +94,76 @@ public final class DataSimTileService extends TileService {
 
     @Override
     public void onClick() {
+        if (clickState == ClickState.WAITING_FOR_PERMISSION) {
+            // Reconcile a lost grant callback without starting another permission request.
+            continueClick();
+            return;
+        }
         if (clickState != ClickState.IDLE) return;
         clickState = ClickState.WAITING_FOR_BINDER;
         updateTileStatus(getString(R.string.tile_status_switching), Tile.STATE_INACTIVE);
         continueClick();
     }
 
-    private void continueClick() {
+    private void waitForShizukuBinder() {
+        clickState = ClickState.WAITING_FOR_BINDER;
         MAIN.removeCallbacks(binderTimeout);
+        MAIN.postDelayed(binderTimeout, SHIZUKU_BINDER_TIMEOUT_MILLIS);
+    }
+
+    private void continueClick() {
         if (!Shizuku.pingBinder()) {
-            clickState = ClickState.WAITING_FOR_BINDER;
-            MAIN.postDelayed(binderTimeout, SHIZUKU_BINDER_TIMEOUT_MILLIS);
+            if (clickState != ClickState.WAITING_FOR_PERMISSION) waitForShizukuBinder();
             return;
         }
+        MAIN.removeCallbacks(binderTimeout);
+        int shizukuPermission;
         try {
-            if (Shizuku.checkSelfPermission() != PackageManager.PERMISSION_GRANTED) {
-                if (!isUserUnlocked()) {
-                    clickState = ClickState.IDLE;
-                    updateTileStatus(getString(R.string.tile_status_shizuku_needed),
-                            Tile.STATE_INACTIVE);
-                } else if (Shizuku.shouldShowRequestPermissionRationale()) {
-                    clickState = ClickState.IDLE;
-                    openSimSettings(R.string.tile_status_shizuku_needed);
-                } else {
-                    clickState = ClickState.WAITING_FOR_PERMISSION;
-                    Shizuku.requestPermission(REQUEST_SHIZUKU_PERMISSION);
-                }
+            shizukuPermission = Shizuku.checkSelfPermission();
+        } catch (RuntimeException e) {
+            if (clickState == ClickState.WAITING_FOR_PERMISSION) {
+                if (!isExpectedShizukuAuthorizationFailure(e)) throw e;
+                Log.w(TAG, "Failed to recheck Shizuku authorization", e);
+            } else {
+                handleShizukuAuthorizationFailure(e);
+            }
+            return;
+        }
+        if (shizukuPermission != PackageManager.PERMISSION_GRANTED) {
+            if (clickState == ClickState.WAITING_FOR_PERMISSION) return;
+            if (!isUserUnlocked()) {
+                clickState = ClickState.IDLE;
+                updateTileStatus(getString(R.string.tile_status_shizuku_needed),
+                        Tile.STATE_INACTIVE);
                 return;
             }
-        } catch (RuntimeException e) {
-            Log.w(TAG, "Failed to check Shizuku authorization", e);
-            if (!Shizuku.pingBinder()) {
-                clickState = ClickState.WAITING_FOR_BINDER;
-                MAIN.postDelayed(binderTimeout, SHIZUKU_BINDER_TIMEOUT_MILLIS);
-            } else {
+            boolean showRationale;
+            try {
+                showRationale = Shizuku.shouldShowRequestPermissionRationale();
+            } catch (RuntimeException e) {
+                handleShizukuAuthorizationFailure(e);
+                return;
+            }
+            if (showRationale) {
                 clickState = ClickState.IDLE;
-                openSimSettingsIfUnlocked(R.string.tile_status_shizuku_needed);
+                openSimSettings(R.string.tile_status_shizuku_needed);
+                return;
+            }
+            permissionRequestCode = ++nextPermissionRequestCode;
+            clickState = ClickState.WAITING_FOR_PERMISSION;
+            try {
+                Shizuku.requestPermission(permissionRequestCode);
+            } catch (IllegalStateException e) {
+                Log.w(TAG, "Shizuku binder was not ready for the permission request", e);
+                waitForShizukuBinder();
+            } catch (RuntimeException e) {
+                if (!isExpectedShizukuAuthorizationFailure(e)) {
+                    clickState = ClickState.IDLE;
+                    throw e;
+                }
+                Log.w(TAG, "Shizuku permission request outcome is unknown", e);
+                updateTileStatus(getString(R.string.tile_status_shizuku_needed),
+                        Tile.STATE_INACTIVE);
             }
             return;
         }
@@ -160,12 +185,28 @@ public final class DataSimTileService extends TileService {
         });
     }
 
+    private static boolean isExpectedShizukuAuthorizationFailure(RuntimeException e) {
+        return e instanceof IllegalStateException || e.getCause() instanceof RemoteException;
+    }
+
+    private void handleShizukuAuthorizationFailure(RuntimeException e) {
+        if (!isExpectedShizukuAuthorizationFailure(e)) throw e;
+        Log.w(TAG, "Failed to use Shizuku authorization", e);
+        if (!Shizuku.pingBinder()) {
+            waitForShizukuBinder();
+        } else {
+            clickState = ClickState.IDLE;
+            openSimSettingsIfUnlocked(R.string.tile_status_shizuku_needed);
+        }
+    }
+
     private void refreshFromShizukuIfAllowed() {
         if (clickState != ClickState.IDLE) return;
         if (!Shizuku.pingBinder()) return;
         try {
             if (Shizuku.checkSelfPermission() != PackageManager.PERMISSION_GRANTED) return;
         } catch (RuntimeException e) {
+            if (!isExpectedShizukuAuthorizationFailure(e)) throw e;
             Log.w(TAG, "Failed to check Shizuku authorization while refreshing", e);
             return;
         }
