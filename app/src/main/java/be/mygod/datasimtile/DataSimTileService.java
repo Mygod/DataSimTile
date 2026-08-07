@@ -39,6 +39,10 @@ public final class DataSimTileService extends TileService {
     private static int nextPermissionRequestCode;
 
     private ClickState clickState = ClickState.IDLE;
+    /**
+     * True only after Shizuku has attached this application, not merely while its Binder is alive.
+     */
+    private boolean shizukuReady;
     private int permissionRequestCode;
     private final Runnable binderTimeout = () -> {
         if (clickState != ClickState.WAITING_FOR_BINDER) return;
@@ -46,11 +50,23 @@ public final class DataSimTileService extends TileService {
         openSimSettingsIfUnlocked(R.string.tile_status_shizuku_needed);
     };
     private final Shizuku.OnBinderReceivedListener binderListener = () -> {
-        if (clickState == ClickState.WAITING_FOR_BINDER) {
+        shizukuReady = true;
+        if (clickState == ClickState.WAITING_FOR_BINDER ||
+                clickState == ClickState.WAITING_FOR_PERMISSION) {
             continueClick();
         } else {
             refreshFromShizukuIfAllowed();
         }
+    };
+    /**
+     * A listener of its own so that {@link #isShizukuReady} can re-run Shizuku's sticky check
+     * without re-entering {@link #binderListener}. It has to stay a stable reference because
+     * {@link Shizuku#removeBinderReceivedListener} matches listeners by identity.
+     */
+    private final Shizuku.OnBinderReceivedListener readyProbe = () -> shizukuReady = true;
+    private final Shizuku.OnBinderDeadListener binderDeadListener = () -> {
+        shizukuReady = false;
+        if (clickState == ClickState.WAITING_FOR_PERMISSION) waitForShizukuBinder();
     };
     private final Shizuku.OnRequestPermissionResultListener permissionListener =
             (requestCode, grantResult) -> {
@@ -69,16 +85,19 @@ public final class DataSimTileService extends TileService {
     @Override
     public void onCreate() {
         super.onCreate();
-        Shizuku.addBinderReceivedListener(binderListener);
+        Shizuku.addBinderDeadListener(binderDeadListener);
         Shizuku.addRequestPermissionResultListener(permissionListener);
+        Shizuku.addBinderReceivedListenerSticky(binderListener);
     }
 
     @Override
     public void onDestroy() {
         MAIN.removeCallbacks(binderTimeout);
         clickState = ClickState.IDLE;
+        shizukuReady = false;
         Shizuku.removeBinderReceivedListener(binderListener);
         Shizuku.removeRequestPermissionResultListener(permissionListener);
+        Shizuku.removeBinderDeadListener(binderDeadListener);
         super.onDestroy();
     }
 
@@ -111,9 +130,28 @@ public final class DataSimTileService extends TileService {
         MAIN.postDelayed(binderTimeout, SHIZUKU_BINDER_TIMEOUT_MILLIS);
     }
 
+    /**
+     * Shizuku 13.1.5 publishes attachment as a single edge that can be lost: its
+     * {@code scheduleBinderReceivedListeners} snapshots the listener list before setting the private
+     * {@code binderReady}, while {@code addBinderReceivedListenerSticky} tests that flag before
+     * registering, so the registration in {@link #onCreate} misses the only ready transition when it
+     * interleaves with {@code bindApplication} on a Binder thread. Registering sticky again is the
+     * only way to read the flag back, and it calls the listener inline while on the main thread, so
+     * recover the level here rather than leaving the tile stuck on a stale {@link #shizukuReady}.
+     */
+    private boolean isShizukuReady() {
+        if (!shizukuReady) {
+            Shizuku.addBinderReceivedListenerSticky(readyProbe);
+            Shizuku.removeBinderReceivedListener(readyProbe);
+        }
+        if (shizukuReady && Shizuku.pingBinder()) return true;
+        shizukuReady = false;
+        return false;
+    }
+
     private void continueClick() {
-        if (!Shizuku.pingBinder()) {
-            if (clickState != ClickState.WAITING_FOR_PERMISSION) waitForShizukuBinder();
+        if (!isShizukuReady()) {
+            waitForShizukuBinder();
             return;
         }
         MAIN.removeCallbacks(binderTimeout);
@@ -155,6 +193,7 @@ public final class DataSimTileService extends TileService {
                 Shizuku.requestPermission(permissionRequestCode);
             } catch (IllegalStateException e) {
                 Log.w(TAG, "Shizuku binder was not ready for the permission request", e);
+                shizukuReady = false;
                 waitForShizukuBinder();
             } catch (RuntimeException e) {
                 if (!isExpectedShizukuAuthorizationFailure(e)) {
@@ -192,21 +231,18 @@ public final class DataSimTileService extends TileService {
     private void handleShizukuAuthorizationFailure(RuntimeException e) {
         if (!isExpectedShizukuAuthorizationFailure(e)) throw e;
         Log.w(TAG, "Failed to use Shizuku authorization", e);
-        if (!Shizuku.pingBinder()) {
-            waitForShizukuBinder();
-        } else {
-            clickState = ClickState.IDLE;
-            openSimSettingsIfUnlocked(R.string.tile_status_shizuku_needed);
-        }
+        shizukuReady = false;
+        waitForShizukuBinder();
     }
 
     private void refreshFromShizukuIfAllowed() {
         if (clickState != ClickState.IDLE) return;
-        if (!Shizuku.pingBinder()) return;
+        if (!isShizukuReady()) return;
         try {
             if (Shizuku.checkSelfPermission() != PackageManager.PERMISSION_GRANTED) return;
         } catch (RuntimeException e) {
             if (!isExpectedShizukuAuthorizationFailure(e)) throw e;
+            shizukuReady = false;
             Log.w(TAG, "Failed to check Shizuku authorization while refreshing", e);
             return;
         }
